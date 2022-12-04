@@ -1,4 +1,7 @@
 const fs = require('fs/promises')
+const path = require('path')
+
+const inputFile = path.join(__dirname, '/input.txt')
 
 const FIRST_COLUMN = {
   A: 'ROCK',
@@ -73,7 +76,7 @@ function scoreForHand(theirs, yours) {
 
 async function part1() {
   try {
-    const data = await fs.readFile('./input.txt', { encoding: 'utf8' })
+    const data = await fs.readFile(inputFile, { encoding: 'utf8' })
     const game = data.split('\n')
     const totalScore = game.map(strategy => {
       const [_theirs, _yours] = strategy.split(' ')
@@ -86,7 +89,7 @@ async function part1() {
       return handScore + gameScore
     })
 
-    console.log(totalScore.reduce((prev, curr) => prev + curr))
+    return totalScore.reduce((prev, curr) => prev + curr)
     
   } catch (err) {
     console.log(err)
@@ -139,7 +142,7 @@ function moveForOutcome(theirs, outcome) {
 
 async function part2() {
   try {
-    const data = await fs.readFile('./input.txt', { encoding: 'utf8' })
+    const data = await fs.readFile(inputFile, { encoding: 'utf8' })
     const game = data.split('\n')
     const totalScore = game.map(strategy => {
       const [_theirs, _outcome] = strategy.split(' ')
@@ -152,16 +155,27 @@ async function part2() {
       const handScore = SCORES[SECOND_COLUMN[yours]]
       const gameScore = scoreForHand(FIRST_COLUMN[theirs], SECOND_COLUMN[yours])
 
-      console.log(yours)
-
       return handScore + gameScore
     })
 
-    console.log(totalScore.reduce((prev, curr) => prev + curr))
+    return totalScore.reduce((prev, curr) => prev + curr)
     
   } catch (err) {
     console.log(err)
   }
 }
 
-part2()
+async function main() {
+  const part1Answer = await part1()
+  const part2Answer = await part2()
+
+  console.log(`part 1 answer: ${part1Answer}`)
+  console.log(`part 2 answer: ${part2Answer}`)
+}
+
+main()
+
+module.exports = {
+  part1,
+  part2
+}
