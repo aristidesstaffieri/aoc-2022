@@ -76,5 +76,6 @@ async function main() {
 main()
 
 module.exports = {
-
+  part1,
+  part2
 }
