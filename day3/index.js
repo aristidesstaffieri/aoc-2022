@@ -50,22 +50,18 @@ async function part2() {
     const groups = rucksackLists.reduce((resultArray, item, index) => { 
       const chunkIndex = Math.floor(index / groupSize)
     
-      if(!resultArray[chunkIndex]) {
+      if (!resultArray[chunkIndex]) {
         resultArray[chunkIndex] = []
       }
     
       resultArray[chunkIndex].push(item)
-    
       return resultArray
     }, [])
 
     const priorities = groups.map(group => {
       const _group = group.map(g => [...g])
-      const [commonBadge] = _group.shift().filter(function(v) {
-        return _group.every(function(a) {
-          return a.indexOf(v) !== -1
-        })
-      })
+      const [commonBadge] = _group.shift()
+        .filter(v => _group.every(a => a.indexOf(v) !== -1))
 
       return getItemPriority(commonBadge)
     })

@@ -74,28 +74,6 @@ function scoreForHand(theirs, yours) {
   }
 }
 
-async function part1() {
-  try {
-    const data = await fs.readFile(inputFile, { encoding: 'utf8' })
-    const game = data.split('\n')
-    const totalScore = game.map(strategy => {
-      const [_theirs, _yours] = strategy.split(' ')
-      const theirs = _theirs.trim()
-      const yours = _yours.trim()
-
-      const handScore = SCORES[SECOND_COLUMN[yours]]
-      const gameScore = scoreForHand(FIRST_COLUMN[theirs], SECOND_COLUMN[yours])
-
-      return handScore + gameScore
-    })
-
-    return totalScore.reduce((prev, curr) => prev + curr)
-    
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 function moveForOutcome(theirs, outcome) {
   if (theirs === 'ROCK') {
     if (outcome === 'LOSE') {
@@ -140,14 +118,32 @@ function moveForOutcome(theirs, outcome) {
   }
 }
 
+async function part1() {
+  try {
+    const data = await fs.readFile(inputFile, { encoding: 'utf8' })
+    const game = data.split('\n')
+    const totalScore = game.map(strategy => {
+      const [theirs, yours] = strategy.split(' ')
+
+      const handScore = SCORES[SECOND_COLUMN[yours]]
+      const gameScore = scoreForHand(FIRST_COLUMN[theirs], SECOND_COLUMN[yours])
+
+      return handScore + gameScore
+    })
+
+    return totalScore.reduce((prev, curr) => prev + curr)
+    
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 async function part2() {
   try {
     const data = await fs.readFile(inputFile, { encoding: 'utf8' })
     const game = data.split('\n')
     const totalScore = game.map(strategy => {
-      const [_theirs, _outcome] = strategy.split(' ')
-      const theirs = _theirs.trim()
-      const outcomeCode = _outcome.trim()
+      const [theirs, outcomeCode] = strategy.split(' ')
 
       const outcome = OUTCOMES[outcomeCode]
       const yours = moveForOutcome(FIRST_COLUMN[theirs], outcome)
