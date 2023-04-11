@@ -4,7 +4,6 @@ const path = require('path')
 const inputFile = path.join(__dirname, '/input.txt')
 
 function handleOutput(lines, sum) {
-  // console.log(lines)
   let size = 0
 
   if (!lines.length) {
